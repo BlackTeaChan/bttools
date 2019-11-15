@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * 数字工具类
  * @author blackteachan
- * @date 2019-11-14 16:25
+ * @since 2019-11-14 16:25
  * @version 1.0
  */
 public class NumberUtil {
@@ -53,7 +53,7 @@ public class NumberUtil {
      * <p>输入："0101"</p>
      * <p>输出：257</p>
      * @param hex 十六进制String
-     * @return
+     * @return 十进制int
      */
     public static int hex2Dec(String hex) {
         try {
@@ -117,8 +117,8 @@ public class NumberUtil {
 
     /**
      * 字符串转换成为16进制(无需Unicode编码)
-     * @param str
-     * @return
+     * @param str 字符串
+     * @return 十六进制String
      */
     public static String str2Hex(String str) {
         StringBuilder sb = new StringBuilder("");
@@ -138,7 +138,7 @@ public class NumberUtil {
      * IEEE-754浮点数转换
      * <p>推荐使用</p>
      * @param hex 十六进制
-     * @return
+     * @return 小数BigDecimal
      */
     public static BigDecimal hex2BigDecimal(String hex){
         Float value = Float.intBitsToFloat((int)Long.parseLong(hex, 16));
@@ -151,7 +151,7 @@ public class NumberUtil {
      * <p>输入："40 48 F5 C2"</p>
      * <p>输出：3.14</p>
      * @param hex 四字节十六进制字符串(40 48 F5 C2)
-     * @return
+     * @return 浮点数
      */
     public static double hex2Double(String hex) {
         String[] hexarray = hex.split( " " );
@@ -201,7 +201,7 @@ public class NumberUtil {
     /**
      * 十六进制字符串转二进制字符串
      * @param hexString 十六进制字符串
-     * @return
+     * @return 二进制String
      */
     public static String hex2Bin(String hexString) {
         if (hexString == null || hexString.length() % 2 != 0) {
