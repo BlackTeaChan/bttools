@@ -1,47 +1,94 @@
 package com.blackteachan.bttools.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author blackteachan
  * 创建日期：2019-11-16 16:46
  */
-public class JdbcUtil {
+public class DbUtil {
 
     /**
      * 数据库用户名
      */
-    private static final String USERNAME = "wms";
+    private static String user = null;
     /**
      * 数据库密码
      */
-    private static final String PASSWORD = "wms123456@";
+    private static String password = null;
     /**
      * 驱动信息
      */
-    private static final String DRIVER = "com.mysql.jdbc.Driver";
+    private static String driver = null;
     /**
      * 数据库地址
      */
-    private static final String URL = "jdbc:mysql://192.168.0.4:3306/wms?useSSL=FALSE&serverTimezone=UTC";
+    private static String url = null;
+    /**
+     * 日志
+     */
+    private static MyLog log = new MyLog();
+//    private static Logger log = Logger.getLogger(DbUtil.class);
+    /**
+     * 读取配置
+     */
+    private static Properties p = null;
+    /**
+     * 实例
+     */
+    private static DbUtil db = null;
+    /**
+     * 连接
+     */
+    private static Connection connection;
 
-    private static Logger log = Logger.getLogger(JdbcUtil.class);
-
-    private Connection connection;
     private PreparedStatement pstmt;
     private PreparedStatement calltmt;
     private ResultSet resultSet;
 
-    public JdbcUtil() {
-        try{
-            Class.forName(DRIVER);
-        }catch(Exception e){
-            log.error("JdbcUtil - 实例化错误: " + e);
+    static{
+        //实例化一个properties对象用来解析我们的配置文件
+        p = new Properties();
+        //通过类加载器来读取我们的配置文件，以字节流的形式读取
+        InputStream in = DbUtil.class.getClassLoader().getResourceAsStream("/dbconfig.properties");
+        try {
+            //将配置文件自如到Propreties对象，来进行解析
+            p.load(in);
+            //读取配置文件
+            user = p.getProperty("user");
+            password = p.getProperty("password");
+            driver = p.getProperty("driver");
+            url = p.getProperty("url");
+            //加载驱动
+            Class.forName(driver);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
+
+    }
+
+    private DbUtil() {
+        try{
+            Class.forName(driver);
+        }catch(Exception e){
+            log.error("DbUtil - 实例化错误: " + e);
+        }
+    }
+
+    public static DbUtil getInstance(){
+        if(db == null){
+            synchronized (db) {
+                if(db == null) {
+                    db = new DbUtil();
+                }
+            }
+        }
+        return db;
     }
 
     /**
@@ -50,10 +97,10 @@ public class JdbcUtil {
      */
     public Connection getConnection(){
         try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             e.printStackTrace();
-            log.error("JdbcUtil - 连接数据库错误: " + e);
+            log.error("DbUtil - 连接数据库错误: " + e);
         }
         return connection;
     }
@@ -61,9 +108,9 @@ public class JdbcUtil {
 
     /**
      * 增加、删除、改
-     * @param sql
-     * @param params
-     * @return
+     * @param sql SQL语句
+     * @param params 参数
+     * @return 是否成功
      * @throws SQLException
      */
     public boolean updateByPreparedStatement(String sql, List<Object> params)throws SQLException{
@@ -81,7 +128,7 @@ public class JdbcUtil {
             result = pstmt.executeUpdate();
             flag = result > 0 ? true : false;
         }catch(Exception e){
-            log.error("JdbcUtil - update错误: " + e);
+            log.error("DbUtil - update错误: " + e);
             return false;
         }
         return flag;
@@ -89,9 +136,9 @@ public class JdbcUtil {
 
     /**
      * 查询单条记录
-     * @param sql
-     * @param params
-     * @return
+     * @param sql SQL语句
+     * @param params 参数
+     * @return 查询的单条结果
      * @throws SQLException
      */
     public Map<String, Object> findSimpleResult(String sql, List<Object> params) throws SQLException{
@@ -122,9 +169,8 @@ public class JdbcUtil {
 
     /**
      * 查询单条记录
-     * @param sql
-     * @param params
-     * @return
+     * @param sql SQL语句
+     * @param params 参数
      * @throws SQLException
      */
     public void exeCallDb(String sql, List<Object> params) throws SQLException{
@@ -136,9 +182,9 @@ public class JdbcUtil {
     }
 
     /**查询多条记录
-     * @param sql
-     * @param params
-     * @return
+     * @param sql SQL语句
+     * @param params 参数
+     * @return 查询到的多条结果
      * @throws SQLException
      */
     public List<Map<String, Object>> findModeResult(String sql, List<Object> params) throws SQLException{
@@ -178,7 +224,7 @@ public class JdbcUtil {
             try{
                 resultSet.close();
             }catch(SQLException e){
-                log.error("JdbcUtil - 释放数据库连接错误：" + e);
+                log.error("DbUtil - 释放数据库连接错误：" + e);
                 e.printStackTrace();
             }
         }try{
@@ -186,9 +232,17 @@ public class JdbcUtil {
                 connection.close();
             }
         }catch(Exception e){
-            log.error("JdbcUtil - 释放数据库连接错误：" + e);
+            log.error("DbUtil - 释放数据库连接错误：" + e);
             e.printStackTrace();
         }
+    }
 
+    private static class MyLog{
+        void info(Object obj){
+            System.out.println(obj.toString());
+        }
+        void error(Object obj){
+            System.out.println(obj.toString());
+        }
     }
 }
