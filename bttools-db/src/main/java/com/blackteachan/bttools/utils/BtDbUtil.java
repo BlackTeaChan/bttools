@@ -6,10 +6,11 @@ import java.sql.*;
 import java.util.*;
 
 /**
+ * 数据库工具类
  * @author blackteachan
  * 创建日期：2019-11-16 16:46
  */
-public class DbUtil {
+public class BtDbUtil {
 
     /**
      * 数据库用户名
@@ -30,20 +31,20 @@ public class DbUtil {
     /**
      * 日志
      */
-    private static MyLog log = new MyLog();
-//    private static Logger log = Logger.getLogger(DbUtil.class);
+    private static BtLog log = new BtLog();
+//    private static Logger log = Logger.getLogger(BtDbUtil.class);
     /**
      * 读取配置
      */
-    private static Properties p = null;
+    private static Properties p;
     /**
      * 实例
      */
-    private static DbUtil db = null;
+    private static BtDbUtil db = null;
     /**
      * 连接
      */
-    private static Connection connection;
+    private static Connection connection = null;
 
     private PreparedStatement pstmt;
     private PreparedStatement calltmt;
@@ -53,7 +54,7 @@ public class DbUtil {
         //实例化一个properties对象用来解析我们的配置文件
         p = new Properties();
         //通过类加载器来读取我们的配置文件，以字节流的形式读取
-        InputStream in = DbUtil.class.getClassLoader().getResourceAsStream("/dbconfig.properties");
+        InputStream in = BtDbUtil.class.getClassLoader().getResourceAsStream("/dbconfig.properties");
         try {
             //将配置文件自如到Propreties对象，来进行解析
             p.load(in);
@@ -72,19 +73,19 @@ public class DbUtil {
 
     }
 
-    private DbUtil() {
+    private BtDbUtil() {
         try{
             Class.forName(driver);
         }catch(Exception e){
-            log.error("DbUtil - 实例化错误: " + e);
+            log.error("BtDbUtil - 实例化错误: " + e);
         }
     }
 
-    public static DbUtil getInstance(){
+    public static BtDbUtil getInstance(){
         if(db == null){
-            synchronized (db) {
+            synchronized (BtDbUtil.class) {
                 if(db == null) {
-                    db = new DbUtil();
+                    db = new BtDbUtil();
                 }
             }
         }
@@ -100,7 +101,7 @@ public class DbUtil {
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             e.printStackTrace();
-            log.error("DbUtil - 连接数据库错误: " + e);
+            log.error("BtDbUtil - 连接数据库错误: " + e);
         }
         return connection;
     }
@@ -128,7 +129,7 @@ public class DbUtil {
             result = pstmt.executeUpdate();
             flag = result > 0 ? true : false;
         }catch(Exception e){
-            log.error("DbUtil - update错误: " + e);
+            log.error("BtDbUtil - update错误: " + e);
             return false;
         }
         return flag;
@@ -224,7 +225,7 @@ public class DbUtil {
             try{
                 resultSet.close();
             }catch(SQLException e){
-                log.error("DbUtil - 释放数据库连接错误：" + e);
+                log.error("BtDbUtil - 释放数据库连接错误：" + e);
                 e.printStackTrace();
             }
         }try{
@@ -232,17 +233,9 @@ public class DbUtil {
                 connection.close();
             }
         }catch(Exception e){
-            log.error("DbUtil - 释放数据库连接错误：" + e);
+            log.error("BtDbUtil - 释放数据库连接错误：" + e);
             e.printStackTrace();
         }
     }
 
-    private static class MyLog{
-        void info(Object obj){
-            System.out.println(obj.toString());
-        }
-        void error(Object obj){
-            System.out.println(obj.toString());
-        }
-    }
 }
