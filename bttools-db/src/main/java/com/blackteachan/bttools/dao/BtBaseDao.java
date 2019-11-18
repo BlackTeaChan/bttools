@@ -3,6 +3,7 @@ package com.blackteachan.bttools.dao;
 import com.blackteachan.bttools.utils.BtBeanUtil;
 import com.blackteachan.bttools.utils.BtDbUtil;
 import com.blackteachan.bttools.utils.BtLog;
+import com.sun.istack.internal.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +15,7 @@ import java.util.Map;
  * @author blackteachan
  * 创建日期：2019-11-18 09:05
  */
-public class BtBaseDao {
+public abstract class BtBaseDao {
 
     /**
      * 日志
@@ -33,7 +34,7 @@ public class BtBaseDao {
         BtDbUtil btDbUtil = BtDbUtil.getInstance();
         btDbUtil.getConnection();
 
-        List<Object> list = Arrays.asList(params);
+        List<Object> list = params != null ? Arrays.asList(params) : null;
         try {
             Map result = btDbUtil.findSimpleResult(sql, list);
             return clazz != null ? BtBeanUtil.mapToObject(result, clazz) : result;
@@ -44,7 +45,7 @@ public class BtBaseDao {
             btDbUtil.releaseConn();
             log.debug("BtBaseDao.get() - " + (System.currentTimeMillis() - time) + "ms");
             log.debug("    SQL - " + sql);
-            log.debug("    PAM - " + Arrays.asList(params));
+            log.debug("    PAM - " + list);
         }
     }
 
@@ -71,7 +72,7 @@ public class BtBaseDao {
         BtDbUtil btDbUtil = BtDbUtil.getInstance();
         btDbUtil.getConnection();
 
-        List<Object> list = Arrays.asList(params);
+        List<Object> list = params != null ? Arrays.asList(params) : null;
         try {
             List<Map<String, Object>> results = btDbUtil.findModeResult(sql, list);
             if(clazz == null) {
@@ -88,7 +89,7 @@ public class BtBaseDao {
         }finally {
             log.debug("BtBaseDao.getList() - " + (System.currentTimeMillis() - time) + "ms");
             log.debug("    SQL - " + sql);
-            log.debug("    PAM - " + Arrays.asList(params));
+            log.debug("    PAM - " + list);
             btDbUtil.releaseConn();
         }
     }
@@ -106,10 +107,10 @@ public class BtBaseDao {
     /**
      * 执行INSERT、UPDATE、DELETE
      * @param sql SQL语句
-     * @param params 参数（数组）
+     * @param params 参数（数组）（NotNull）
      * @return 是否成功
      */
-    public boolean update(String sql, Object ...params){
+    public boolean update(String sql, @NotNull Object ...params){
         long time = System.currentTimeMillis();
 
         BtDbUtil btDbUtil = BtDbUtil.getInstance();
