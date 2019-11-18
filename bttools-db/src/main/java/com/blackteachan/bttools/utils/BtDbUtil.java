@@ -54,7 +54,7 @@ public class BtDbUtil {
         //实例化一个properties对象用来解析我们的配置文件
         p = new Properties();
         //通过类加载器来读取我们的配置文件，以字节流的形式读取
-        InputStream in = BtDbUtil.class.getClassLoader().getResourceAsStream("/dbconfig.properties");
+        InputStream in = BtDbUtil.class.getClassLoader().getResourceAsStream("dbconfig.properties");
         try {
             //将配置文件自如到Propreties对象，来进行解析
             p.load(in);
