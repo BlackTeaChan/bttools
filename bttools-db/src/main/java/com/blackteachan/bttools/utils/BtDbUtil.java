@@ -94,7 +94,7 @@ public class BtDbUtil {
 
     /**
      * 获得数据库的连接
-     * @return
+     * @return 返回数据库连接
      */
     public Connection getConnection(){
         try {
@@ -112,7 +112,7 @@ public class BtDbUtil {
      * @param sql SQL语句
      * @param params 参数
      * @return 是否成功
-     * @throws SQLException
+     * @throws SQLException SQL异常
      */
     public boolean updateByPreparedStatement(String sql, List<Object> params)throws SQLException{
         boolean flag = false;
@@ -140,7 +140,7 @@ public class BtDbUtil {
      * @param sql SQL语句
      * @param params 参数
      * @return 查询的单条结果
-     * @throws SQLException
+     * @throws SQLException SQL异常
      */
     public Map<String, Object> findSimpleResult(String sql, List<Object> params) throws SQLException{
         Map<String, Object> map = new HashMap<String, Object>();
@@ -172,7 +172,7 @@ public class BtDbUtil {
      * 查询单条记录
      * @param sql SQL语句
      * @param params 参数
-     * @throws SQLException
+     * @throws SQLException SQL异常
      */
     public void exeCallDb(String sql, List<Object> params) throws SQLException{
         calltmt = connection.prepareCall("{call oprData(?)}");
@@ -186,7 +186,7 @@ public class BtDbUtil {
      * @param sql SQL语句
      * @param params 参数
      * @return 查询到的多条结果
-     * @throws SQLException
+     * @throws SQLException SQL异常
      */
     public List<Map<String, Object>> findModeResult(String sql, List<Object> params) throws SQLException{
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
