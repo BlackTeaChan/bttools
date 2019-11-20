@@ -3,8 +3,8 @@ package com.blackteachan.bttools.dao;
 import com.blackteachan.bttools.utils.BtBeanUtil;
 import com.blackteachan.bttools.utils.BtDbUtil;
 import com.blackteachan.bttools.utils.BtLog;
-import com.sun.istack.internal.NotNull;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
