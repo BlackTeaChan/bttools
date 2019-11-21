@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  * @since 2019-11-14 16:25
  * @version 1.0
  */
-public class NumberUtil {
+public class BtNumberUtil {
     
     private static final char[] CHARS_BASE = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     private static final String STRING_BASE = "0123456789ABCDEF";

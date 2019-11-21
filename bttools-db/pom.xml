@@ -147,14 +147,14 @@
         </pluginManagement>
     </build>
 
-    <!--定义snapshots库和releases库的nexus地址-->
+    <!--定义snapshot库和release库的nexus地址-->
     <distributionManagement>
         <repository>
             <id>release</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
         <snapshotRepository>
-            <id>snapshots</id>
+            <id>snapshot</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
