@@ -8,8 +8,8 @@
     <artifactId>bttools-db</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>bttools-number</name>
-    <description>bttools-number</description>
+    <name>bttools-db</name>
+    <description>bttools-db</description>
     <url>https://github.com/BlackTeaChan/bttools/</url>
 
     <dependencies>
