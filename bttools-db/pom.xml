@@ -6,7 +6,11 @@
 
     <groupId>com.blackteachan.bttools</groupId>
     <artifactId>bttools-db</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>bttools-number</name>
+    <description>bttools-number</description>
+    <url>https://github.com/BlackTeaChan/bttools/</url>
 
     <dependencies>
         <dependency>
