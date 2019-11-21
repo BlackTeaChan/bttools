@@ -21,7 +21,7 @@ public class BtBeanUtil {
      * @return 充满数据的实体类
      * @throws Exception 抛出异常
      */
-    public static Object mapToObject(Map<String, Object> map, Class<?> clazz) throws Exception {
+    public static Object map2Object(Map<String, Object> map, Class<?> clazz) throws Exception {
         if (map == null) {
             return null;
         }

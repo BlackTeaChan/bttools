@@ -37,7 +37,7 @@ public abstract class BtBaseDao {
         List<Object> list = params != null ? Arrays.asList(params) : null;
         try {
             Map result = btDbUtil.findSimpleResult(sql, list);
-            return clazz != null ? BtBeanUtil.mapToObject(result, clazz) : result;
+            return clazz != null ? BtBeanUtil.map2Object(result, clazz) : result;
         }catch (Exception e){
             log.debug(e.getMessage());
             return null;
@@ -80,7 +80,7 @@ public abstract class BtBaseDao {
             }
             List result = new ArrayList();
             for(Map<String, Object> map : results){
-                result.add(BtBeanUtil.mapToObject(map, clazz));
+                result.add(BtBeanUtil.map2Object(map, clazz));
             }
             return result;
         }catch (Exception e){
