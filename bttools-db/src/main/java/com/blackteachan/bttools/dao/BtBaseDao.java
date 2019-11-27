@@ -4,7 +4,6 @@ import com.blackteachan.bttools.utils.BtBeanUtil;
 import com.blackteachan.bttools.utils.BtDbUtil;
 import com.blackteachan.bttools.utils.BtLog;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -107,16 +106,15 @@ public abstract class BtBaseDao {
     /**
      * 执行INSERT、UPDATE、DELETE
      * @param sql SQL语句
-     * @param params 参数（数组）（NotNull）
+     * @param params 参数（数组）
      * @return 是否成功
      */
-    public boolean update(String sql, @NotNull Object ...params){
+    public boolean update(String sql, Object ...params){
         long time = System.currentTimeMillis();
-
         BtDbUtil btDbUtil = BtDbUtil.getInstance();
         btDbUtil.getConnection();
 
-        List<Object> list = Arrays.asList(params);
+        List<Object> list = params != null ? Arrays.asList(params) : null;
         try {
             return btDbUtil.updateByPreparedStatement(sql, list);
         }catch (Exception e){

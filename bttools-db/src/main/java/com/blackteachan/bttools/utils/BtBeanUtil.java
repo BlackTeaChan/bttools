@@ -28,6 +28,25 @@ public class BtBeanUtil {
         Object obj = clazz.newInstance();
         List<Field> fieldList = new ArrayList<Field>();
         while(clazz != null){
+            //当前类的成员变量
+            Field[] thisField = clazz.getDeclaredFields();
+            //继续添加成员变量内部的变量到fieldList
+            for (Field field : thisField) {
+                Class fc = field.getType();
+                List<Field> fields = Arrays.asList(fc.getDeclaredFields());
+                Object entity = fc.newInstance();
+                for (Field tempF : fields) {
+                    int mod = tempF.getModifiers();
+                    if(Modifier.isStatic(mod) || Modifier.isFinal(mod)){
+                        continue;
+                    }
+                    tempF.setAccessible(true);
+                    tempF.set(entity, map.get(tempF.getName()));
+                }
+                String className = fc.getSimpleName().substring(0, 1).toLowerCase()
+                        + fc.getSimpleName().substring(1);
+                map.put(className, entity);
+            }
             fieldList.addAll(Arrays.asList(clazz.getDeclaredFields()));
             clazz = clazz.getSuperclass();
         }

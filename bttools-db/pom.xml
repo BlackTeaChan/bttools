@@ -6,19 +6,11 @@
 
     <groupId>com.blackteachan.bttools</groupId>
     <artifactId>bttools-db</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>bttools-db</name>
     <description>bttools-db</description>
     <url>https://github.com/BlackTeaChan/bttools/</url>
-
-    <dependencies>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>7.0</version>
-        </dependency>
-    </dependencies>
 
     <!--licenses信息-->
     <licenses>
