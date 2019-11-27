@@ -33,6 +33,10 @@ public class BtBeanUtil {
             //继续添加成员变量内部的变量到fieldList
             for (Field field : thisField) {
                 Class fc = field.getType();
+                //判断是否是用户类
+                if (fc.getClassLoader() == null) {
+                    continue;
+                }
                 List<Field> fields = Arrays.asList(fc.getDeclaredFields());
                 Object entity = fc.newInstance();
                 for (Field tempF : fields) {
